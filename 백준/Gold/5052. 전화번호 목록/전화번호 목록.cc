@@ -1,47 +1,93 @@
 #include <iostream>
 #include <set>
 #include <string>
+#include <map>
+#include <vector>
+#include <algorithm>
+#include <functional>
 using namespace std;
 
-void solution(int n)
+class Node
 {
-	set<string> visited;
-	bool flag = true;
-	string str = "";
+public:
+	char val;
+	map<char, Node*> child;
 
-	for (int i = 0; i < n; i++)
+	Node(char val)
 	{
-		cin >> str;
-		visited.insert(str);
+		this->val = val;
+	}
+};
+
+class Trie
+{
+public:
+	Node* root;
+
+	Trie()
+	{
+		this->root = new Node('R');
 	}
 
-	for (auto iter = visited.begin(); iter != visited.end(); iter++)
+	bool insert(string str, int idx, int cnt, Node* pos)
 	{
-		str = "";
-		for (size_t i = 0; i < iter->size(); i++)
+		if (cnt == (int)str.size())
 		{
-			str += iter->at(i);
-			if (iter != visited.find(str) && visited.count(str))
-			{
-				flag = false;
-				break;
-			}
+			return false;
 		}
-		if (!flag) break;
-	}
+		if (idx == (int)str.size())
+		{
+			return true;
+		}
 
-	if (flag)	cout << "YES" << '\n';
-	else		cout << "NO" << '\n';
-}
+		char val = str[idx];
+		if (pos->child.count(val) == 0)
+		{
+			Node* newNode = new Node(val);
+			pos->child.insert({ val, newNode });
+		}
+		else // 이미 있는 경우
+		{
+			cnt++;
+		}
+		
+		return insert(str, idx + 1, cnt, pos->child.find(val)->second);
+	}
+};
+
 
 int main()
 {
-	int t, n;
-	cin >> t;
-	for (int i = 0; i < t; i++)
+	int T, N;
+	cin >> T;
+
+	string telNum;
+	string res;
+	for (int t = 0; t < T; t++)
 	{
-		cin >> n;
-		solution(n);
+		vector<pair<int, string>> telNumVec;
+		Trie trie;
+
+		cin >> N;
+		for (int n = 0; n < N; n++)
+		{
+			cin >> telNum;
+			telNumVec.push_back({ (int)telNum.size(), telNum });
+		}
+
+		sort(telNumVec.begin(), telNumVec.end(), greater<pair<int, string>>());
+
+		res = "YES";
+		for (auto iter : telNumVec)
+		{
+			if (!trie.insert(iter.second, 0, 0, trie.root))
+			{
+				res = "NO";
+				break;
+			}
+		}
+
+		cout << res << '\n';
 	}
 	return 0;
 }
