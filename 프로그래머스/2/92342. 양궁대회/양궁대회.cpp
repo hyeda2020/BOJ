@@ -1,3 +1,14 @@
+/*
+    참고 풀이 : https://wadekang.tistory.com/9
+    
+    <라이언의 행동 케이스>
+    1. 어피치보다 한 발 더 맞춘다.
+    2. 화살을 쏘지 않고 다음 과녁으로 넘어간다.
+
+    - 같은 점수 차일 경우엔 낮은 점수를 많이 맞출수록 우선순위가 높다
+    (따라서, 쏘고 나서 화살 개수가 남으면 0점으로 몰빵)
+*/
+    
 #include <string>
 #include <vector>
 using namespace std;
