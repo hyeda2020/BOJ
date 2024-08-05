@@ -93,6 +93,6 @@ int solution(vector<vector<string>> relation) {
         memset(bCheck, 0, sizeof(bCheck));
     }
     
-    int answer = max(1, (int)KeyVec.size());
+    int answer = max(1, (int)KeyVec.size()); // relation의 컬럼사이즈가 1인 경우에 대한 예외처리
     return answer;
 }
