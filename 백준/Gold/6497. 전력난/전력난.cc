@@ -6,7 +6,6 @@ using namespace std;
 
 int HouseCnt, RoadCnt;
 int Group[200001];
-int GroupSize[200001];
 
 class Edge
 {
@@ -30,14 +29,11 @@ bool Cmp(Edge& left, Edge& right)
 
 int Find(int& u)
 {
-	if (Group[u] == u)
+	if (Group[u] != u)
 	{
-		return u;
+		Group[u] = Find(Group[u]);
 	}
-	else
-	{
-		return Group[u] = Find(Group[u]);
-	}
+	return Group[u]; // 갱신
 }
 
 int main()
@@ -59,7 +55,6 @@ int main()
 		for (int i = 0; i < HouseCnt; i++)
 		{
 			Group[i] = i;
-			GroupSize[i] = 1;
 		}
 
 		roadVec.clear();
@@ -81,12 +76,7 @@ int main()
 			int v = Find(roadVec[i].dest);
 			if (u != v)
 			{
-				if (GroupSize[u] > GroupSize[v])
-				{
-					swap(u, v);
-				}
 				Group[v] = u;
-				GroupSize[u] += GroupSize[v];
 				minCost += roadVec[i].cost;
 			}
 		}
