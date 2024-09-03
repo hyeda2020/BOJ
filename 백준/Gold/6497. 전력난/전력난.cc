@@ -1,5 +1,4 @@
 #include <iostream>
-#include <queue>
 #include <vector>
 #include <algorithm>
 using namespace std;
@@ -31,9 +30,9 @@ int Find(int& u)
 {
 	if (Group[u] != u)
 	{
-		Group[u] = Find(Group[u]);
+		Group[u] = Find(Group[u]); // 갱신
 	}
-	return Group[u]; // 갱신
+	return Group[u]; 
 }
 
 int main()
