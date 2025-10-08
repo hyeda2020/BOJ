@@ -1,11 +1,12 @@
 #include <iostream>
-#include <set>
 #include <string>
 #include <map>
 #include <vector>
 #include <algorithm>
 #include <functional>
 using namespace std;
+
+int T, N;
 
 class Node
 {
@@ -29,9 +30,9 @@ public:
 		this->root = new Node('R');
 	}
 
-	bool insert(string str, int idx, int cnt, Node* pos)
+	bool insert(string str, int idx, int matchCnt, Node* pos)
 	{
-		if (cnt == (int)str.size())
+		if (matchCnt == (int)str.size())
 		{
 			return false;
 		}
@@ -41,53 +42,47 @@ public:
 		}
 
 		char val = str[idx];
-		if (pos->child.count(val) == 0)
+		if (!pos->child.count(val))
 		{
 			Node* newNode = new Node(val);
 			pos->child.insert({ val, newNode });
 		}
-		else // 이미 있는 경우
+		else
 		{
-			cnt++;
+			matchCnt++;
 		}
-		
-		return insert(str, idx + 1, cnt, pos->child.find(val)->second);
+
+		return insert(str, idx + 1, matchCnt, pos->child.find(val)->second);
 	}
 };
 
-
 int main()
 {
-	int T, N;
 	cin >> T;
-
-	string telNum;
-	string res;
-	for (int t = 0; t < T; t++)
+	string input;
+	string result;
+	for (int i = 0; i < T; i++)
 	{
-		vector<pair<int, string>> telNumVec;
 		Trie trie;
+		vector<pair<int, string>> telNumVec;
 
 		cin >> N;
-		for (int n = 0; n < N; n++)
+		for (int j = 0; j < N; j++)
 		{
-			cin >> telNum;
-			telNumVec.push_back({ (int)telNum.size(), telNum });
+			cin >> input;
+			telNumVec.push_back({ (int)input.size(), input });
 		}
-
 		sort(telNumVec.begin(), telNumVec.end(), greater<pair<int, string>>());
 
-		res = "YES";
+		result = "YES";
 		for (auto iter : telNumVec)
 		{
 			if (!trie.insert(iter.second, 0, 0, trie.root))
 			{
-				res = "NO";
-				break;
+				result = "NO";
 			}
 		}
-
-		cout << res << '\n';
+		cout << result << '\n';
 	}
 	return 0;
 }
