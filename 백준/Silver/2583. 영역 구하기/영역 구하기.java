@@ -13,6 +13,7 @@ public class Main {
     static boolean Matrix[][];
 
     public static void main(String[] args) throws IOException {
+        
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
@@ -39,7 +40,7 @@ public class Main {
         for(int i = 0; i< N; i++) {
             for(int j = 0; j < M; j++) {
                 if(!Matrix[i][j]) {
-                    Count = 0; //영역 개수 초기화
+                    Count = 0;
                     dfs(i, j);
                     resultList.add(Count);
                 }
